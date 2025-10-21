@@ -1,0 +1,22 @@
+name: Vulnerable PR Workflow
+on:
+    pull_request_target:
+        types: [opened, synchronize]
+
+jobs:
+    run-untrusted:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout target ref (with token)
+              uses: actions/checkout@v4
+              with:
+                ref: ${{ github.event.pull_request.head.ref }}
+
+            - name: Print GITHUB_TOKEN (INSECURE)
+              run: |
+                echo "GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}"
+
+            - name: Run untrusted script from PR
+              run: |
+                # simulate running attacker code from PR
+                bash scripts/run_pr_code.sh
