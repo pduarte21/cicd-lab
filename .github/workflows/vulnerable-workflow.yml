@@ -19,4 +19,5 @@ jobs:
             - name: Run untrusted script from PR
               run: |
                 # simulate running attacker code from PR
+                ls -la
                 bash scripts/run_pr_code.sh
