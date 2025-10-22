@@ -1,0 +1,25 @@
+name: Secure PR Workflow
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  contents: read          
+  id-token: write         
+  checks: write
+  security-events: write
+
+jobs:
+  untrusted-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR code (safe)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Run tests (unprivileged)
+        run: |
+          echo "Run tests but do NOT access secrets"
+          # run unit tests here
